@@ -5,16 +5,22 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const encrypt = require("mongoose-encryption");
 const say = console.log;
-const md5 = require("md5");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const app = express();
 
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
-mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect("mongodb://localhost:27017/userDB", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 const userSchema = mongoose.Schema({
   email: String,
@@ -24,53 +30,58 @@ const userSchema = mongoose.Schema({
 const User = new mongoose.model("User", userSchema);
 
 
-app.get("/", function(req, res){
+app.get("/", function(req, res) {
   res.render("home");
 });
 
-app.get("/login", function(req, res){
+app.get("/login", function(req, res) {
   res.render("login");
 });
 
-app.get("/register", function(req, res){
+app.get("/register", function(req, res) {
   res.render("register");
 });
 
-app.get("/logout", function(req, res){
+app.get("/logout", function(req, res) {
   res.render("home");
 });
 
-app.post("/register", function(req, res){
+app.post("/register", function(req, res) {
 
-  const newUser = new User({
+  bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+    const newUser = new User({
       email: req.body.username,
-      password: md5(req.body.password)
-  }).save(function(err){
-    if(!err){
-      res.render("secrets");
-    }else{
-      res.send(err);
-    }
-  });
-
-});
-
-app.post("/login", function(req, res){
-  const username = req.body.username;
-  const password = md5(req.body.password);
-
-  User.findOne({email: username}, function(err, foundUser){
-    if(!err){
-      if(foundUser){
-        if(foundUser.password === password){
-          res.render("secrets");
-        }else{console.log("Password not match");}
+      password: hash
+    }).save(function(err) {
+      if (!err) {
+        res.render("secrets");
+      } else {
+        res.send(err);
       }
-    }else{
+    });
+  });
+});
+
+app.post("/login", function(req, res) {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.findOne({email: username}, function(err, foundUser) {
+    if (!err) {
+      if (foundUser) {
+        bcrypt.compare(password, foundUser.password, function(err, result) {
+          console.log("password is:" + password + "\nfoundUser password is:" + foundUser.password + "\nResult is:" + result);
+          if (result === true) {
+            res.render("secrets");
+          } else {
+            console.log("Wrong Password");
+          }
+        });
+      }
+    } else {
       res.send(err);
     }
   });
-
 });
 
 
@@ -79,6 +90,6 @@ app.post("/login", function(req, res){
 
 
 
-app.listen(3000, function(){
+app.listen(3000, function() {
   say("server is running...");
 });
