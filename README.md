@@ -2,7 +2,7 @@
 
 ##### i'm still working on this project, it's under developing...
 
-##### this project is building using nodejs.
+##### this project built using nodejs.
 
 This project about different levels of security.
 
@@ -16,4 +16,6 @@ This project about different levels of security.
 
 - level 5: using cookies and sessions.
 
-- level 6: cooming soon... :).
+- level 6: OAuth 2.0 & Implementing Sign In with Google.
+
+🔥This Projetc is Awosem 🔥❤️
