@@ -1,6 +1,5 @@
 # Authentication-and-Security-Project-Test
 
-##### i'm still working on this project, it's under developing...
 
 ##### this project built using nodejs.
 
