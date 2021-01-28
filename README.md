@@ -1,9 +1,8 @@
 # Authentication-and-Security-Project-Test
 
 
-##### this project built using nodejs.
 
-This project about different levels of security.
+### This project about different levels of security.
 
 - level 1: saving the username and password as it is (palin-text) in the Database.
 
@@ -17,4 +16,11 @@ This project about different levels of security.
 
 - level 6: OAuth 2.0 & Implementing Sign In with Google.
 
-🔥This Projetc is Awosem 🔥❤️
+##### this project built using nodejs and mongoDB.
+
+## Technologies and tools:
+- Front-end: javascript, html, css, bootstrap, ejs.
+- Back-end: nodejs, js, express, mongoDB, mongoose, git. 
+
+
+🔥 This Project is Awesome 🔥❤️
